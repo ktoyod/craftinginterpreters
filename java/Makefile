@@ -22,3 +22,8 @@ tool/compile:
 tool/run: tool/compile
 	$(RUN_CONTEXT) java com/craftinginterpreters/tool/GenerateAst com/craftinginterpreters/lox
 
+AstPrinter/compile:
+	$(RUN_CONTEXT) javac com/craftinginterpreters/lox/AstPrinter.java
+
+AstPrinter/run: AstPrinter/compile
+	$(RUN_CONTEXT) java com/craftinginterpreters/lox/AstPrinter

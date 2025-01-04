@@ -15,3 +15,10 @@ compile:
 
 run: compile
 	$(RUN_CONTEXT) java com/craftinginterpreters/lox/Lox
+
+tool/compile:
+	$(RUN_CONTEXT) javac com/craftinginterpreters/tool/GenerateAst.java
+
+tool/run: tool/compile
+	$(RUN_CONTEXT) java com/craftinginterpreters/tool/GenerateAst com/craftinginterpreters/lox
+

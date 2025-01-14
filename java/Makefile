@@ -27,3 +27,9 @@ AstPrinter/compile:
 
 AstPrinter/run: AstPrinter/compile
 	$(RUN_CONTEXT) java com/craftinginterpreters/lox/AstPrinter
+
+RpnPrinter/compile:
+	$(RUN_CONTEXT) javac com/craftinginterpreters/lox/RpnPrinter.java
+
+RpnPrinter/run: RpnPrinter/compile
+	$(RUN_CONTEXT) java com/craftinginterpreters/lox/RpnPrinter

@@ -24,7 +24,33 @@ class Parser {
         }
 
         private Expr expression() {
-                return equality();
+                return conditional();
+        }
+
+        private Expr conditional() {
+                Expr expr = comma();
+                if (match(QUESTION)) {
+                        Expr thenBranch = expression();
+                        consume(COLON, "Expect ':' after then branch of conditional expression.");
+                        Expr elseBranch = conditional();
+                        expr = new Expr.Conditional(expr, thenBranch, elseBranch);
+                }
+
+                return expr;
+        }
+
+
+
+        private Expr comma() {
+                Expr expr = equality();
+
+                while (match(COMMA)) {
+                        Token operator = previous();
+                        Expr right = equality();
+                        expr = new Expr.Binary(expr, operator, right);
+                }
+
+                return expr;
         }
 
         private Expr equality() {
@@ -98,6 +124,30 @@ class Parser {
                         Expr expr = expression();
                         consume(RIGHT_PAREN, "Expect ')' after expression.");
                         return new Expr.Grouping(expr);
+                }
+
+                if (match(BANG_EQUAL, EQUAL_EQUAL)) {
+                        error(previous(), "Missing left-hand operand.");
+                        equality();
+                        return null;
+                }
+
+                if (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+                        error(previous(), "Missing left-hand operand.");
+                        comparison();
+                        return null;
+                }
+
+                if (match(PLUS)) {
+                        error(previous(), "Missing left-hand operand.");
+                        term();
+                        return null;
+                }
+
+                if (match(SLASH, STAR)) {
+                        error(previous(), "Missing left-hand operand.");
+                        factor();
+                        return null;
                 }
 
                 throw error(peek(), "Expect expression.");

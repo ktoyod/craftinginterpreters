@@ -85,11 +85,11 @@ class Interpreter implements Expr.Visitor<Object> {
                                 }
 
                                 if (left instanceof String && right instanceof Double) {
-                                        return (String)left + String.valueOf((Double)right);
+                                        return (String)left + stringify((Double)right);
                                 }
 
                                 if (left instanceof Double && right instanceof String) {
-                                        return String.valueOf((Double)left) + (String)right;
+                                        return stringify((Double)left) + (String)right;
                                 }
 
                                 throw new RuntimeError(expr.operator, 
